@@ -10,6 +10,7 @@ services:
       - "9870:9870"
     volumes:
       - "./app:/app"
+      - hdfs-namenode:/hadoop/dfs/name
     networks:
       - spark-cluster
     depends_on:
@@ -19,13 +20,15 @@ services:
     tty: true
     working_dir: /app
     # You can comment the entrypoint to run the script manually inside the container
-    entrypoint: 
-      - bash
-      - /app/app.sh
+    # entrypoint:
+    #   - bash
+    #   - /app/app.sh
     
   cluster-slave-1:
     image: firasj/spark-docker-cluster
     container_name: cluster-slave-1
+    volumes:
+      - hdfs-datanode:/hadoop/dfs/data
     networks:
       - spark-cluster
     hostname: cluster-slave-1
@@ -44,10 +47,20 @@ services:
     container_name: cassandra-server
     ports:
       - "7000:7000"
+    volumes:
+      - cassandra-data:/var/lib/cassandra
     networks:
       - spark-cluster
-    
+    # restart: unless-stopped
+    environment:
+      - JVM_EXTRA_OPTS=-Dcassandra.disk_access_mode=standard
+
 
 networks:
   spark-cluster:
     driver: bridge
+
+volumes:
+  cassandra-data:
+  hdfs-namenode:
+  hdfs-datanode:

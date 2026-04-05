@@ -1,0 +1,19 @@
+[project]
+name = "big-data-assignment2"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cassandra-driver>=3.29.3",
+    "fastparquet>=2026.3.0",
+    "pathvalidate>=3.3.1",
+    "pyarrow>=23.0.1",
+    "pyspark>=4.1.1",
+    "tqdm>=4.67.3",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.9",
+]

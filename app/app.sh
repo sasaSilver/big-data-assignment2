@@ -1,26 +1,31 @@
 #!/bin/bash
-# Start ssh server
-service ssh restart 
 
-# Starting the services
+# Start ssh server
+service ssh restart
 bash start-services.sh
 
-# Creating a virtual environment
+# Create a virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
 
-# Install any packages
-pip install -r requirements.txt  
-
-# Package the virtual env.
+# Package the venv
 venv-pack -o .venv.tar.gz
 
-# Collect data
+echo "STEP 1: DATA PREPARATION"
 bash prepare_data.sh
 
-
-# Run the indexer
+echo "STEP 2: INDEXING"
 bash index.sh
 
-# Run the ranker
-bash search.sh "this is a query!"
+echo "STEP 3: SEARCH"
+
+echo "SEARCH 1: economy"
+bash search.sh "economy"
+
+# echo "SEARCH 2: elizabeth artist"
+# bash search.sh "elizabeth artist"
+
+echo "ALL STEPS COMPLETE"
+sleep infinity
